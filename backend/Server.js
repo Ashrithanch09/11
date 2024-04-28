@@ -8,6 +8,12 @@ const app = express();
 app.use(express.json())
 app.use(cors());
 
+/*app.use(cors({
+    origin:["https://eric-robotics-assignment.vercel.app/"],
+    methods:["GET","POST","PUT","DELETE"],
+    credentials:true
+}));*/
+
 const dbpath = path.join(__dirname, "db.js") 
 let db = null;
 
@@ -52,11 +58,10 @@ app.post("/create", async(req,res)=>{
 app.get('/',async (req,res)=>{
     const Qry = `Select * from Robots`
     const dbResponse = await db.all(Qry)
-    res.send(dbResponse)
     return res.json(dbResponse)
 })
 
 
-app.listen(3001,()=>{
+app.listen(process.env.PORT || 3001,()=>{
     console.log(`Server running at http://localhost:3001`)
 })
